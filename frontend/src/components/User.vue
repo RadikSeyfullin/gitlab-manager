@@ -1,14 +1,21 @@
 <template>
     <div>
-        <h4>UID: {{ user.uid }}</h4>
-        <h1>{{ user.name }}</h1>
-        <hr>
-        <h2>All your projects:</h2>
-        <div v-for="project in projects" :key="project.pid">
-            <h1>{{ project.name }}</h1>
-            <h3>{{ project.pid }}</h3>
-            <h5>{{ project.created_at }}</h5>
-            <h6>{{ project.creator.username }}</h6>
+        <div v-if='loading'>
+        <div class='progress-bar'>
+        loading...
+        </div>
+        </div>
+        <div v-else>
+            <h4>UID: {{ user.uid }}</h4>
+            <h1>{{ user.name }}</h1>
+            <hr>
+            <h2>All your projects:</h2>
+            <div v-for="project in projects" :key="project.pid">
+                <h1>{{ project.name }}</h1>
+                <h3>{{ project.pid }}</h3>
+                <h5>{{ project.created_at }}</h5>
+                <h6>{{ project.creator.username }}</h6>
+            </div>
         </div>
     </div>
 </template>
@@ -22,7 +29,8 @@ export default {
     data() {
         return {
             user: null,
-            projects: null
+            projects: null,
+            loadting: true
         }
     },
     methods: {
@@ -44,8 +52,12 @@ export default {
                 headers: {'Authorization': 'Token ' + sessionStorage.getItem('auth_token')}
             }).then(res => {
                 this.projects = res.data.data.data
+                setTimeout(() => {
+                    this.loading = false
+                }, 1000);
             }).catch(err => {
                 console.log(err)
+                this.loading = false
             })
         },
     },

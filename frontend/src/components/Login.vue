@@ -20,7 +20,7 @@ export default {
     methods: {
         loginIn() {
             $.ajax({
-                url: 'http://127.0.0.1:8000/auth/token/login/',
+                url: 'http://127.0.0.1:8000/api/v1/auth/token/login/',
                 type: 'POST',
                 data: {
                     username: this.login,
